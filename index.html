@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minhas Tarefas</title>
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="supabase.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <main class="container">
+    <h1>Minhas Tarefas</h1>
+    <p>Organiza as tuas tarefas do dia.</p>
+
+    
+<section id="area-acesso">
+  <h2>A tua conta</h2>
+
+  <form id="form-registo">
+    <input
+      type="email"
+      id="email"
+      placeholder="O teu e-mail"
+      required
+    >
+
+    <input
+      type="password"
+      id="senha"
+      placeholder="Palavra-passe (mínimo 6 caracteres)"
+      minlength="6"
+      required
+    >
+
+    <button type="submit">Criar conta</button>
+    <button type="button" id="botao-entrar">
+      Iniciar sessão
+    </button>
+    <button type="button" id="botao-sair">
+      Terminar sessão
+    </button>
+  </form>
+
+  <p id="estado-acesso" role="status"></p>
+</section>
+
+    
+    <form id="form-tarefa">
+      <input
+        type="text"
+        id="titulo-tarefa"
+        placeholder="Escreve uma tarefa..."
+        required
+      >
+      <button type="submit">Adicionar</button>
+    </form>
+
+    <ul id="lista-tarefas"></ul>
+    <p id="mensagem" role="status"></p>
+  </main>
+</body>
+</html>
