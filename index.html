@@ -39,6 +39,9 @@
     <button type="button" id="botao-entrar">
       Iniciar sessão
     </button>
+    <button type="button" id="botao-recuperar">
+       Esqueci-me da palavra-passe
+    </button>
     <button type="button" id="botao-sair">
       Terminar sessão
     </button>
@@ -46,6 +49,20 @@
 
   <p id="estado-acesso" role="status"></p>
 </section>
+    
+    <form id="form-nova-senha" hidden>
+  <h2>Definir nova palavra-passe</h2>
+
+  <input
+    type="password"
+    id="nova-senha"
+    placeholder="Nova palavra-passe"
+    minlength="6"
+    required
+  >
+
+  <button type="submit">Guardar nova palavra-passe</button>
+</form>
 
     
     <form id="form-tarefa">

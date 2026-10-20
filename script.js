@@ -1,4 +1,3 @@
-
 const formularioRegisto = document.getElementById("form-registo");
 const campoEmail = document.getElementById("email");
 const campoSenha = document.getElementById("senha");
@@ -10,6 +9,42 @@ const formulario = document.getElementById("form-tarefa");
 const campoTarefa = document.getElementById("titulo-tarefa");
 const listaTarefas = document.getElementById("lista-tarefas");
 const mensagem = document.getElementById("mensagem");
+
+const formularioNovaSenha =
+  document.getElementById("form-nova-senha");
+
+const campoNovaSenha =
+  document.getElementById("nova-senha");
+
+
+const botaoRecuperar = document.getElementById("botao-recuperar");
+const URL_APLICACAO = "https://progaminy.github.io/Supbtarefas/";
+
+// Recuperar a palavra-passe
+botaoRecuperar.addEventListener("click", async function () {
+  const email = campoEmail.value.trim();
+
+  if (!email) {
+    estadoAcesso.textContent = "Escreve primeiro o teu e-mail.";
+    campoEmail.focus();
+    return;
+  }
+
+  estadoAcesso.textContent = "A enviar o e-mail de recuperação...";
+
+  const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+    redirectTo: URL_APLICACAO
+  });
+
+  if (error) {
+    estadoAcesso.textContent =
+      "Erro ao enviar o e-mail: " + error.message;
+    return;
+  }
+
+  estadoAcesso.textContent =
+    "Se o e-mail estiver registado, receberás instruções para recuperar a palavra-passe. Verifica também o Spam.";
+});
 
 // Criar uma conta
 formularioRegisto.addEventListener("submit", async function (evento) {
@@ -182,5 +217,54 @@ async function verificarSessao() {
 }
 
 verificarSessao();
+
+// Mostrar o formulário quando o utilizador abre
+// um link válido de recuperação
+supabaseClient.auth.onAuthStateChange(
+  function (evento, sessao) {
+    if (evento === "PASSWORD_RECOVERY" && sessao) {
+      formularioNovaSenha.hidden = false;
+      estadoAcesso.textContent =
+        "Link válido! Define a tua nova palavra-passe.";
+    }
+  }
+);
+
+// Guardar a nova palavra-passe
+formularioNovaSenha.addEventListener(
+  "submit",
+  async function (evento) {
+    evento.preventDefault();
+
+    const novaSenha = campoNovaSenha.value;
+
+    if (novaSenha.length < 6) {
+      estadoAcesso.textContent =
+        "A palavra-passe deve ter pelo menos 6 caracteres.";
+      return;
+    }
+
+    estadoAcesso.textContent =
+      "A guardar a nova palavra-passe...";
+
+    const { error } = await supabaseClient.auth.updateUser({
+      password: novaSenha
+    });
+
+    if (error) {
+      estadoAcesso.textContent =
+        "Erro: " + error.message;
+      return;
+    }
+
+    estadoAcesso.textContent =
+      "Palavra-passe alterada! Já podes iniciar sessão com a nova palavra-passe.";
+
+    formularioNovaSenha.reset();
+    formularioNovaSenha.hidden = true;
+
+    await supabaseClient.auth.signOut();
+  }
+);
 
 
