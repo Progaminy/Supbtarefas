@@ -21,8 +21,11 @@ formularioRegisto.addEventListener("submit", async function (evento) {
   estadoAcesso.textContent = "A criar a conta...";
 
   const { data, error } = await supabaseClient.auth.signUp({
-    email,
-    password: senha
+  email,
+  password: senha,
+  options: {
+    emailRedirectTo: "https://progaminy.github.io/Supbtarefas/"
+   }
   });
 
   if (error) {
